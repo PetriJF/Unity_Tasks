@@ -8,27 +8,28 @@ public class ForceSensor : MonoBehaviour
     // Used for representing the force reading and its magnitude
     private Vector3 sensorReading = Vector3.zero;
     private float magnitude = 0.0f;
+
     // Used for representing the color threshold for the arrows
     private const float DEFAULT_MAG_MIN_THRESHOLD = 3f;
     private const float DEFAULT_MAG_MAX_THRESHOLD = 7f;
-    //private float magThreshold = DEFAULT_MAG_THRESHOLD;
     public float magMinThreshold = DEFAULT_MAG_MIN_THRESHOLD;
     public float magMaxThreshold = DEFAULT_MAG_MAX_THRESHOLD;
 
-    public Color lowColor = Color.green;
-    public Color highColor = Color.red;
-    public int maxForceAxis = 3;
-    public int minForceAxis = -3;
+    public Color lowColor = Color.green;                        //<< The lower bound arrow color for the lower threshold
+    public Color highColor = Color.red;                         //<< The upper bound arrow color for the upper threshold
+    public int maxForceAxis = 3;                                //<< The maximum axis-wise force reading
+    public int minForceAxis = -3;                               //<< The minimum axis-wise force reading
 
-    private const float ARROW_SCALE_FACTOR = 1f;
-    public float arrowScaleFactor = ARROW_SCALE_FACTOR;
-    // Representing the arrow components
-    public GameObject arrowTip;
-    public GameObject arrowLine;
+    private const float ARROW_SCALE_FACTOR = 1f;                //<< The default scale factor
+    public float arrowScaleFactor = ARROW_SCALE_FACTOR;         //<< Stores the scale factor for the force reading
 
-    private GameObject arrowTipInstance;
-    private GameObject arrowLineInstance;
+    public GameObject arrowTip;                                 //<< Arrow tip prefab
+    public GameObject arrowLine;                                //<< Arrow line prefab
 
+    private GameObject arrowTipInstance;                        //<< Instance of the arrow's tip
+    private GameObject arrowLineInstance;                       //<< Instance of the arrow's line
+
+    // Randomize the force reading (and therefor the magnitude) of the sensor
     public void SimulateForceSensor(out Vector3 forceReadings, out float magnitude) {
         // Generate random force vector
         forceReadings = new Vector3(Random.Range(minForceAxis, maxForceAxis + 1),
@@ -40,6 +41,7 @@ public class ForceSensor : MonoBehaviour
         magnitude = forceReadings.magnitude;
     }
 
+    // Setting the arrow based on the force reading
     public void SetArrow(Vector3 sensorReading, float magnitude) {
         arrowLineInstance = Instantiate(arrowLine);
         arrowTipInstance = Instantiate(arrowTip);
@@ -82,7 +84,7 @@ public class ForceSensor : MonoBehaviour
         arrowTipRenderer.material.color = interpolatedColor;
     }
 
-    // Ensure to call this after Instantiating a sensor object!!!
+    // Sets the parameters of the sensor. Ensure to call this after Instantiating a sensor object!
     public void setParams(float magMinThreshold, float magMaxThreshold, float arrowScaleFactor, Color lowColor, Color highColor) {
         this.magMinThreshold = magMinThreshold;
         this.magMaxThreshold = magMaxThreshold;
@@ -95,16 +97,19 @@ public class ForceSensor : MonoBehaviour
         updateArrowColor();
     }
 
+    // Sets the lower threshold for the arrow's color scale
     public void setMinThreshold(float threshold) {
         magMinThreshold = threshold;
         updateArrowColor();
     }
 
+    // Sets the upper threshold for the arrow's color scale
     public void setMaxThreshold(float threshold) {
         magMaxThreshold = threshold;
         updateArrowColor();
     }
 
+    // Sets the scale factor of the arrow 
     public void setScaleFactor(float scaleFactor) {
         arrowScaleFactor = scaleFactor;
         removeArrows();
@@ -112,6 +117,7 @@ public class ForceSensor : MonoBehaviour
         updateArrowColor();
     }
 
+    // Removes the arrow representation of the sensor's force
     public void removeArrows() {
         if (arrowTipInstance != null)
             Destroy(arrowTipInstance);
@@ -119,6 +125,7 @@ public class ForceSensor : MonoBehaviour
             Destroy(arrowLineInstance);
     }
 
+    // Sets the color scale for the sensor's arrow
     public void setColorScale(Color lowColor, Color highColor) {
         this.lowColor = lowColor;
         this.highColor = highColor;

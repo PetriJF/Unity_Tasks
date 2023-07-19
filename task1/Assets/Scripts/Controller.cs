@@ -4,22 +4,22 @@ using UnityEngine;
 using TMPro;
 using Unity.VisualScripting;
 
-public class randomSpawner : MonoBehaviour {
-    private const int INITIAL_COUNT = 1;
-    private bool randomRotationToggle = false;
+public class Controller : MonoBehaviour {
+    private const int INITIAL_COUNT = 1;        //<< Determines how many sensors exist at the start of the scene
+    private bool randomRotationToggle = false;  //<< Enables the sensor to randomize rotation when spawning
 
-    private int sensorCloneCounter;
+    private int sensorCloneCounter;             //<< Stores the number of active sensors in the scene 
 
-    public GameObject sensorPrefab;
-    public GameObject sensorContainer;
-    public TextMeshProUGUI lowThresholdValue;
-    public TextMeshProUGUI highThresholdValue;
-    public TextMeshProUGUI scaleFactorValue;
+    public GameObject sensorPrefab;             //<< The sensor prefab
+    public GameObject sensorContainer;          //<< A container used to store all the sensors active
+    public TextMeshProUGUI lowThresholdValue;   //<< THe Force lower bound threshold
+    public TextMeshProUGUI highThresholdValue;  //<< The Force upper bound threshold
+    public TextMeshProUGUI scaleFactorValue;    //<< Scale factor for the arrows
 
-    private Color minArrowColor = Color.green;
-    private Color maxArrowColor = Color.red;
+    private Color minArrowColor = Color.green;  //<< The color of the force lower bound threshold
+    private Color maxArrowColor = Color.red;    //<< The color of the force upper bound threshold
 
-
+    // List of all the sensors active in the scene
     public List<GameObject> sensors = new List<GameObject>();
 
     // Start is called before the first frame update
@@ -35,11 +35,13 @@ public class randomSpawner : MonoBehaviour {
             addSensor();
     }
 
+    // Determines whether the sensors have random rotation as well on spawn (Enabling it makes things look more messy)
     public void setRandRotToggle(bool randomRotationToggle) {
         Debug.Log("Random Rotation " + ((randomRotationToggle) ? "enabled" : "disabled"));
         this.randomRotationToggle = randomRotationToggle;
     }
 
+    // Adds a new sensor
     public void addSensor() {
         // Compute a random position for the sensor
         Vector3 randPos = new Vector3(Random.Range(-5, 6), Random.Range(1, 3), Random.Range(-5, 6));
@@ -50,7 +52,7 @@ public class randomSpawner : MonoBehaviour {
         sensor.transform.parent = sensorContainer.transform;
         // Rename the sensor based on the number of clones already existing
         sensor.name = "Sensor_" + (sensorCloneCounter++);
-
+        // Sets the parameters of the new sensor
         sensor.GetComponent<ForceSensor>().setParams(float.Parse(lowThresholdValue.text), float.Parse(highThresholdValue.text), float.Parse(scaleFactorValue.text),
                                                      minArrowColor, maxArrowColor);
         
@@ -58,6 +60,7 @@ public class randomSpawner : MonoBehaviour {
         updateChildlist();
     }
 
+    // Updates the List of the sensors in the scene
     private void updateChildlist() {
         // Get all the sensor clones in a list
         sensors = new List<GameObject>();
@@ -65,23 +68,25 @@ public class randomSpawner : MonoBehaviour {
             sensors.Add(child.gameObject);
     }
 
+    // Removes all the sensors from the scenes
     public void removeAllSensors() { 
         // Delete all the sensors
         sensors.ForEach(child => Destroy(child));
         // Reset number of clones existing
         sensorCloneCounter = 1;
         // Update the child list
-        updateChildlist();
+        sensors = new List<GameObject>();
     }
 
+    // Updates the lower bound for the force threshold of the sensors
     public void updateMinThreshold() {
-        Debug.Log(sensors.Count);
         if (sensors.Count != 0)
             sensors.ForEach(sensor =>
                 sensor.GetComponent<ForceSensor>().setMinThreshold(float.Parse(lowThresholdValue.text))
             );
     }
 
+    // Updates the upper bound for the force threshold of the sensors
     public void updateMaxThreshold() {
         if (sensors.Count != 0)
             sensors.ForEach(sensor =>
@@ -89,6 +94,7 @@ public class randomSpawner : MonoBehaviour {
             );
     }
 
+    // Updates the scale factor for the arrows. (Used to make the arrows shorter)
     public void updateScaleFactor() {
         if (sensors.Count != 0)
             sensors.ForEach(sensor =>
@@ -96,16 +102,19 @@ public class randomSpawner : MonoBehaviour {
             );
     }
 
+    // Sets the color representative of the lower bound of the force threshold
     public void setMinArrowColor(Color min) {
         minArrowColor = min;
         updateArrowColors(minArrowColor, maxArrowColor);
     }
 
+    // Sets the color representative of the upper bound of the force threshold
     public void setMaxArrowColor(Color max) {
         maxArrowColor = max;
         updateArrowColors(minArrowColor, maxArrowColor);
     }
 
+    // Updates the colors of all the sensor force arrows based on the bound colors
     private void updateArrowColors(Color min, Color max) {
         if (sensors.Count != 0)
             sensors.ForEach(sensor =>
