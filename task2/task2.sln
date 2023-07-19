@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.XR.Interaction.Toolkit.Samples.DeviceSimulator", "Unity.XR.Interaction.Toolkit.Samples.DeviceSimulator.csproj", "{AF433F45-18F8-49A0-272B-2263B52C727E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{53E52DCB-3162-5917-982B-473B0364D239}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF433F45-18F8-49A0-272B-2263B52C727E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF433F45-18F8-49A0-272B-2263B52C727E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF433F45-18F8-49A0-272B-2263B52C727E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF433F45-18F8-49A0-272B-2263B52C727E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53E52DCB-3162-5917-982B-473B0364D239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53E52DCB-3162-5917-982B-473B0364D239}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53E52DCB-3162-5917-982B-473B0364D239}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53E52DCB-3162-5917-982B-473B0364D239}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
